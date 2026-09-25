@@ -25,6 +25,8 @@ interface UiMessage {
 
 interface Props {
   activeDocument: PdfDocumentInfo | null;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 // ─── Prompt templates ─────────────────────────────────────────────────────────
@@ -42,8 +44,7 @@ function pdfSystem(docName: string, context: string): string {
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
-export const AiAssistant: React.FC<Props> = ({ activeDocument }) => {
-  const [open, setOpen] = useState(false);
+export const AiAssistant: React.FC<Props> = ({ activeDocument, isOpen, onClose }) => {
   const [settings, setSettings] = useState<AiSettings | null>(() => loadAiSettings());
   const [showSetup, setShowSetup] = useState(false);
 
@@ -183,14 +184,21 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument }) => {
     }
   };
 
-  // ── Launcher (closed) ─────────────────────────────────────────────────────
-  if (!open) {
-    return (
-      <button className="ai-fab" onClick={() => setOpen(true)} title="Chat with your PDF">
-        <Sparkles size={18} />
-        <span>AI</span>
-      </button>
-    );
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  // ── Closed state ────────────────────────────────────────────────────────────
+  if (!isOpen) {
+    return null;
   }
 
   const providerMeta = settings ? PROVIDERS[settings.provider] : null;
@@ -215,7 +223,7 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument }) => {
               <Settings size={15} />
             </button>
           )}
-          <button className="ai-icon-btn" onClick={() => setOpen(false)} title="Close">
+          <button className="ai-icon-btn" onClick={onClose} title="Close">
             <X size={16} />
           </button>
         </div>

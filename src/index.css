@@ -1293,8 +1293,51 @@ input[type=number] {
 }
 
 .topbar-left  { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
-.topbar-center{ display: flex; align-items: center; justify-content: center; }
+.topbar-center{ display: flex; align-items: center; justify-content: center; gap: 8px; }
 .topbar-right { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
+
+/* ── Ask AI Topbar Button ── */
+.topbar-ai-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.22);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+.topbar-ai-btn:hover {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.45);
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+  transform: translateY(-1px);
+}
+.topbar-ai-btn:active {
+  transform: translateY(0);
+}
+.topbar-ai-btn.active {
+  color: #fff;
+  background: var(--accent-gradient);
+  border-color: transparent;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.45), var(--shadow-glow);
+}
+.topbar-ai-btn .topbar-ai-icon {
+  color: #818cf8;
+  transition: transform 0.2s ease, color 0.18s ease;
+}
+.topbar-ai-btn:hover .topbar-ai-icon,
+.topbar-ai-btn.active .topbar-ai-icon {
+  color: #fff;
+  transform: scale(1.12) rotate(6deg);
+}
 
 .topbar-brand {
   display: flex; align-items: center; gap: 8px;
@@ -2274,6 +2317,27 @@ input[type=number] {
 .light-theme .view-tab-group {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .topbar-ai-btn,
+.light-theme .topbar-ai-btn {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.22);
+  color: var(--accent-primary);
+}
+
+[data-theme="light"] .topbar-ai-btn:hover,
+.light-theme .topbar-ai-btn:hover {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: var(--accent-hover);
+}
+
+[data-theme="light"] .topbar-ai-btn.active,
+.light-theme .topbar-ai-btn.active {
+  background: var(--accent-gradient);
+  color: #ffffff;
+  border-color: transparent;
 }
 
 [data-theme="light"] .view-tab,
@@ -3341,8 +3405,8 @@ input[type=number] {
 /* ── Panel (open state) ───────────────────────────────────────────────────── */
 .ai-panel {
   position: fixed;
-  top: 84px;
-  right: 18px;
+  top: 60px;
+  right: 16px;
   z-index: 850;
   width: 384px;
   max-width: calc(100vw - 32px);
