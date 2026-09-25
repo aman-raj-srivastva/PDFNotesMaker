@@ -422,18 +422,6 @@ export const App: React.FC = () => {
             </div>
 
             <div className="topbar-center">
-              {/* Ask AI Topbar Button (left of view tabs) */}
-              <button
-                className={`topbar-ai-btn ${aiOpen ? 'active' : ''}`}
-                onClick={() => setAiOpen(o => !o)}
-                title="Chat with your PDF using AI"
-                aria-label="Ask AI assistant"
-                aria-expanded={aiOpen}
-              >
-                <Sparkles size={14} className="topbar-ai-icon" />
-                <span>Ask AI</span>
-              </button>
-
               <div className="view-tab-group">
                 <button
                   className={`view-tab ${view === 'viewer' ? 'active' : ''}`}
@@ -455,6 +443,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="topbar-right">
+              {/* Ask AI Button (leftmost in topbar-right) */}
+              <button
+                className={`topbar-ai-btn ${aiOpen ? 'active' : ''}`}
+                onClick={() => setAiOpen(o => !o)}
+                title="Chat with your PDF using AI"
+                aria-label="Ask AI assistant"
+                aria-expanded={aiOpen}
+              >
+                <Sparkles size={14} className="topbar-ai-icon" />
+                <span>Ask AI</span>
+              </button>
+
               {/* Unsaved / Saved Status Indicator */}
               {snippets.length > 0 && (
                 <div
