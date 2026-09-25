@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { CheckCircle2, BookOpen, Download, Eye, Plus, Sun, Moon, AlertTriangle, RotateCcw } from 'lucide-react';
+import { CheckCircle2, BookOpen, Download, Eye, Plus, Sun, Moon, AlertTriangle, RotateCcw, Sparkles } from 'lucide-react';
 import { UploadScreen } from './components/UploadScreen';
 import { PdfViewer } from './components/PdfViewer';
 import { SnippetTray } from './components/SnippetTray';
@@ -41,6 +41,7 @@ export const App: React.FC = () => {
   const [isExporting,   setIsExporting]   = useState(false);
   const [soundEnabled,  setSoundEnabled]  = useState(true);
   const [toast,         setToast]         = useState<string | null>(null);
+  const [aiOpen,        setAiOpen]        = useState(false);
   const addMoreInputRef = useRef<HTMLInputElement>(null);
 
   // ── White Theme / Dark Theme State ──────────────────────────────────────────
@@ -421,6 +422,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="topbar-center">
+              {/* Ask AI Topbar Button (left of view tabs) */}
+              <button
+                className={`topbar-ai-btn ${aiOpen ? 'active' : ''}`}
+                onClick={() => setAiOpen(o => !o)}
+                title="Chat with your PDF using AI"
+                aria-label="Ask AI assistant"
+                aria-expanded={aiOpen}
+              >
+                <Sparkles size={14} className="topbar-ai-icon" />
+                <span>Ask AI</span>
+              </button>
+
               <div className="view-tab-group">
                 <button
                   className={`view-tab ${view === 'viewer' ? 'active' : ''}`}
@@ -537,7 +550,11 @@ export const App: React.FC = () => {
           </div>
 
           {/* ── AI Assistant: Chat with your PDF ───────────────────────────── */}
-          <AiAssistant activeDocument={activeDocument} />
+          <AiAssistant
+            activeDocument={activeDocument}
+            isOpen={aiOpen}
+            onClose={() => setAiOpen(false)}
+          />
         </>
       )}
 
