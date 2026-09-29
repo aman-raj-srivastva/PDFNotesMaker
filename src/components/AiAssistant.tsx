@@ -104,7 +104,13 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument, isOpen, onClose }
     setShowSetup(true);
     setDraftProvider(settings?.provider ?? null);
     if (settings) {
-      setDraftModel(settings.model);
+      let currentModel = settings.model;
+      if (settings.provider === 'groq' && (currentModel.startsWith('llama') || currentModel.startsWith('mixtral') || currentModel.startsWith('gemma'))) {
+        currentModel = 'openai/gpt-oss-20b';
+      } else if (settings.provider === 'gemini' && (currentModel.startsWith('gemini-2.0') || currentModel.startsWith('gemini-1.5') || currentModel.startsWith('gemini-1.0'))) {
+        currentModel = 'gemini-3.8-flash';
+      }
+      setDraftModel(currentModel);
       setDraftKey(settings.apiKey);
     }
   };
@@ -122,6 +128,18 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument, isOpen, onClose }
   const send = useCallback(async () => {
     const question = input.trim();
     if (!question || loading || !settings) return;
+
+    // Auto-migrate groq or gemini models if they're pointing to decommissioned models
+    let activeSettings = settings;
+    if (settings.provider === 'groq' && (settings.model.startsWith('llama') || settings.model.startsWith('mixtral') || settings.model.startsWith('gemma'))) {
+      activeSettings = { ...settings, model: 'openai/gpt-oss-20b' };
+      saveAiSettings(activeSettings);
+      setSettings(activeSettings);
+    } else if (settings.provider === 'gemini' && (settings.model.startsWith('gemini-2.0') || settings.model.startsWith('gemini-1.5') || settings.model.startsWith('gemini-1.0'))) {
+      activeSettings = { ...settings, model: 'gemini-3.8-flash' };
+      saveAiSettings(activeSettings);
+      setSettings(activeSettings);
+    }
 
     const history: UiMessage[] = [...messages, { role: 'user', content: question }];
     setMessages(history);
@@ -159,9 +177,9 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument, isOpen, onClose }
         .map(m => ({ role: m.role, content: m.content }));
 
       const reply = await chatComplete({
-        provider: settings.provider,
-        apiKey: settings.apiKey,
-        model: settings.model,
+        provider: activeSettings.provider,
+        apiKey: activeSettings.apiKey,
+        model: activeSettings.model,
         system,
         messages: apiMessages,
         signal: controller.signal,
@@ -280,8 +298,14 @@ export const AiAssistant: React.FC<Props> = ({ activeDocument, isOpen, onClose }
                 value={draftModel}
                 onChange={e => setDraftModel(e.target.value)}
                 placeholder={PROVIDERS[draftProvider].defaultModel}
+                list="ai-suggested-models"
                 spellCheck={false}
               />
+              <datalist id="ai-suggested-models">
+                {PROVIDERS[draftProvider].suggestedModels.map(m => (
+                  <option key={m} value={m} />
+                ))}
+              </datalist>
 
               <a className="ai-key-link" href={PROVIDERS[draftProvider].keyUrl} target="_blank" rel="noreferrer">
                 Get a free key <ExternalLink size={12} />

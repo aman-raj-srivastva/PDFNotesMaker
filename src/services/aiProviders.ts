@@ -10,6 +10,7 @@ export interface ProviderMeta {
   name: string;
   blurb: string;          // one-line description shown on the picker card
   defaultModel: string;
+  suggestedModels: string[];
   keyLabel: string;       // e.g. "sk-..."
   keyUrl: string;         // where the user creates a key
   free: boolean;          // has a usable free tier
@@ -20,8 +21,9 @@ export const PROVIDERS: Record<ProviderId, ProviderMeta> = {
   groq: {
     id: 'groq',
     name: 'Groq',
-    blurb: 'Llama 3.3 70B · very fast, free tier',
-    defaultModel: 'llama-3.3-70b-versatile',
+    blurb: 'GPT OSS 20B · ~1,000 t/s, public tier',
+    defaultModel: 'openai/gpt-oss-20b',
+    suggestedModels: ['openai/gpt-oss-20b', 'openai/gpt-oss-120b'],
     keyLabel: 'gsk_...',
     keyUrl: 'https://console.groq.com/keys',
     free: true,
@@ -30,8 +32,9 @@ export const PROVIDERS: Record<ProviderId, ProviderMeta> = {
   gemini: {
     id: 'gemini',
     name: 'Google Gemini',
-    blurb: 'Gemini 2.0 Flash · generous free tier',
-    defaultModel: 'gemini-2.0-flash',
+    blurb: 'Gemini 3.8 Flash · generous free tier',
+    defaultModel: 'gemini-3.8-flash',
+    suggestedModels: ['gemini-3.8-flash', 'gemini-3.8-pro', 'gemini-3.8-flash-lite'],
     keyLabel: 'AIza...',
     keyUrl: 'https://aistudio.google.com/app/apikey',
     free: true,
@@ -42,6 +45,7 @@ export const PROVIDERS: Record<ProviderId, ProviderMeta> = {
     name: 'OpenAI',
     blurb: 'GPT-4o mini · paid',
     defaultModel: 'gpt-4o-mini',
+    suggestedModels: ['gpt-4o-mini', 'gpt-4o'],
     keyLabel: 'sk-...',
     keyUrl: 'https://platform.openai.com/api-keys',
     free: false,
@@ -52,6 +56,7 @@ export const PROVIDERS: Record<ProviderId, ProviderMeta> = {
     name: 'Anthropic Claude',
     blurb: 'Claude 3.5 Sonnet · paid',
     defaultModel: 'claude-3-5-sonnet-latest',
+    suggestedModels: ['claude-3-5-sonnet-latest', 'claude-3-5-haiku-latest'],
     keyLabel: 'sk-ant-...',
     keyUrl: 'https://console.anthropic.com/settings/keys',
     free: false,
