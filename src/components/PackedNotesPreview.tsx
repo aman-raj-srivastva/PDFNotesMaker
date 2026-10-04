@@ -479,7 +479,7 @@ export const PackedNotesPreview: React.FC<PackedNotesPreviewProps> = ({
                   
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      #{idx + 1} • p.{snip.pageNumber}
+                      {idx + 1} • p.{snip.pageNumber}
                     </div>
                     <div style={{ display: 'flex', gap: '4px', marginTop: '2px', alignItems: 'center' }}>
                       <button
@@ -773,7 +773,7 @@ export const PackedNotesPreview: React.FC<PackedNotesPreviewProps> = ({
                             borderColor: isDark ? 'rgba(99, 102, 241, 0.4)' : undefined,
                           }}
                         >
-                          #{snippets.findIndex(s => s.id === item.snippet.id) + 1}
+                          {snippets.findIndex(s => s.id === item.snippet.id) + 1}
                         </span>
                       )}
 
