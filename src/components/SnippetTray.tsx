@@ -348,7 +348,7 @@ export const SnippetTray: React.FC<SnippetTrayProps> = ({
               {/* Footer */}
               <div className="snippet-card-footer">
                 <div className="snippet-card-meta">
-                  <span style={{ fontWeight: 700, color: '#a5b4fc' }}>#{index + 1}</span>
+                  <span style={{ fontWeight: 700, color: '#a5b4fc' }}>{index + 1}</span>
                   <span style={{ color: 'var(--text-secondary)' }}>p.{snippet.pageNumber}</span>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.68rem' }}>{snippet.width}×{snippet.height}</span>
                 </div>
